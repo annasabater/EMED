@@ -13,15 +13,64 @@
         android:theme="@style/Theme.EMED_Projecte_Android"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.theme.PrincipalMainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.EMED_Projecte_Android">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.theme.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.theme.RegisterActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.theme.DoctorLogReg"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.theme.MessageActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.theme.LanguageActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
+        </activity>
+        <activity
+            android:name=".ui.theme.SearchDoctors"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value=""/>
         </activity>
     </application>
 

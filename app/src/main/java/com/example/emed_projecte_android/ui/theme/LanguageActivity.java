@@ -1,14 +1,13 @@
-package edu.upc.dsa.restproject;
-import android.content.Context;
+package com.example.emed_projecte_android.ui.theme;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.emed_projecte_android.R;
 
 import java.util.Locale;
 
@@ -39,7 +38,7 @@ public class LanguageActivity extends AppCompatActivity {
         Configuration configuration = getBaseContext().getResources().getConfiguration();
         configuration.setLocale(locale);
         configuration.setLayoutDirection(locale);
-        Intent intentRegister = new Intent(LanguageActivity.this, LoginActivity.class);
+        Intent intentRegister = new Intent(LanguageActivity.this, SearchDoctors.class);
         this.startActivity(intentRegister);
     }
 
@@ -55,7 +54,8 @@ public class LanguageActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
-    public void returnFunction(View view) {
-        finish();
+    public void returnFunction(View view){
+        Intent intentRegister = new Intent(LanguageActivity.this, MainActivity.class);
+        LanguageActivity.this.startActivity(intentRegister);
     }
 }

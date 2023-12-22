@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">EMED_Projecte_Android</string>
+
+<string-array name="recipient_types">
+    <item>User</item>
+    <item>DoctorI</item>
+    <item>DoctorSS</item>
+    <item>DoctorM</item>
+</string-array>
+
+    <string-array name="doctor_types_array">
+        <item>DoctorI</item>
+        <item>DoctorSS</item>
+        <item>DoctorM</item>
+    </string-array>
 </resources>
