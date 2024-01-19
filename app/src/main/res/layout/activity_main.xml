@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/mailtext"
+            android:id="@+id/mail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
@@ -57,7 +57,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordtext"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPersonName"
@@ -103,7 +103,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
-        android:onClick="btnRegisterClicked"
+        android:onClick="btnDocClicked"
         android:text="Doctor Login/Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

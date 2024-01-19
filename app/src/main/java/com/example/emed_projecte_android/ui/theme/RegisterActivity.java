@@ -22,40 +22,38 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class RegisterActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.emed_projecte_android.ui.theme.MESSAGE";
-    private TextInputEditText nombreUsuarioEditText;
-    private TextInputEditText surnameUsuarioEditText;
-    private TextInputEditText mailEditText;
-    private TextInputEditText passwordEditText;
-    private TextInputEditText DNITextEditText;
-    private TextInputEditText numberSSTextEditText;
-    private TextInputEditText numberMTextEditText;
-    private TextInputEditText phonenumberTextEditText;
-
+    private TextInputEditText nombreUsuariotext;
+    private TextInputEditText surnameUsuariotext;
+    private TextInputEditText mailtext;
+    private TextInputEditText passwordtext;
+    private TextInputEditText DNIText;
+    private TextInputEditText numberSSText;
+    private TextInputEditText numberMText;
+    private TextInputEditText phonenumberText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        nombreUsuarioEditText = findViewById(R.id.nombreUsuariotext);
-        surnameUsuarioEditText = findViewById(R.id.surnameUsuariotext);
-        mailEditText = findViewById(R.id.mailtext);
-        passwordEditText = findViewById(R.id.passwordtext);
-        DNITextEditText = findViewById(R.id.DNIText);
-        numberSSTextEditText = findViewById(R.id.numberSSText);
-        numberMTextEditText = findViewById(R.id.numberMText);
-        phonenumberTextEditText = findViewById(R.id.phonenumberText);
+        nombreUsuariotext = findViewById(R.id.nombreUsuariotext);
+        surnameUsuariotext = findViewById(R.id.surnameUsuariotext);
+        mailtext = findViewById(R.id.mailtext);
+        passwordtext = findViewById(R.id.passwordtext);
+        DNIText = findViewById(R.id.DNIText);
+        numberSSText = findViewById(R.id.numberSSText);
+        numberMText = findViewById(R.id.numberMText);
+        phonenumberText = findViewById(R.id.phonenumberText);
     }
 
-    public void register(View view) {
-        String name = nombreUsuarioEditText.getText().toString();
-        String surname = surnameUsuarioEditText.getText().toString();
-        String mail = mailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        String dni = DNITextEditText.getText().toString();
-        String numberSS = numberSSTextEditText.getText().toString();
-        String numberM = numberMTextEditText.getText().toString();
-        String phone_number = phonenumberTextEditText.getText().toString();
+    public void register(View view) { //Cuando le das al boton register
+        String name = nombreUsuariotext.getText().toString();
+        String surname = surnameUsuariotext.getText().toString();
+        String mail = mailtext.getText().toString();
+        String password = passwordtext.getText().toString();
+        String dni = DNIText.getText().toString();
+        String numberSS = numberSSText.getText().toString();
+        String numberM = numberMText.getText().toString();
+        String phone_number = phonenumberText.getText().toString();
 
         if (!name.isEmpty() && !surname.isEmpty() && !mail.isEmpty() && !password.isEmpty() &&
                 !dni.isEmpty() && !numberSS.isEmpty() && !numberM.isEmpty() && !phone_number.isEmpty()) {
@@ -68,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private class RegisterTask extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... params) {
             String query = params[0];
@@ -130,10 +127,13 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, "El usuario ya existe", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, result);
+                Intent intent = new Intent(RegisterActivity.this, SearchDoctor.class);
                 startActivity(intent);
             }
         }
+    }
+    public void returnFunction(View view){
+        Intent intentRegister = new Intent(RegisterActivity.this, MainActivity.class);
+        RegisterActivity.this.startActivity(intentRegister);
     }
 }

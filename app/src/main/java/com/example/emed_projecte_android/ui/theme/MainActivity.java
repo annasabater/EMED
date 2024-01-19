@@ -8,14 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.emed_projecte_android.R;
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.io.IOException;
-
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,7 +19,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-
     private ProgressBar progressBar;
     public static final String TEXT1 = "User's email: ";
     public static final String TEXT2 = "User's password: ";
@@ -45,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 String password = ((TextInputEditText) findViewById(R.id.passwordtext)).getText().toString();
 
                 if (!email.isEmpty() && !password.isEmpty()) {
-                    // Iniciar tarea asíncrona para realizar la solicitud HTTP
+                    // solicitud HTTP
                     new LoginTask().execute(email, password);
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
@@ -80,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
                 Request request = new Request.Builder()
-                        .url("http://tu_servidor/login")  // Reemplaza con la URL correcta de tu servidor
+                        .url("http://tu_servidor/login")  // URL servidor
                         .post(formBody)
                         .build();
 
@@ -96,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
             if (result != null && result.equals("Welcome")) {
                 Toast.makeText(MainActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, SearchDoctors.class);
+                Intent intent = new Intent(MainActivity.this, SearchDoctor.class);
                 startActivity(intent);
-                saveData();  // Llama a saveData después de iniciar sesion
+                saveData();  // saveData despues de iniciar sesion
             } else {
                 Toast.makeText(MainActivity.this, "Usuario no registrado", Toast.LENGTH_SHORT).show();
             }
@@ -107,10 +102,22 @@ public class MainActivity extends AppCompatActivity {
         public void saveData() {
             SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
+            //editor.putString(TEXT1, mail.getText().toString());
+            //editor.putString(TEXT2, password.getText().toString());
             editor.putString(TEXT1, mail);
             editor.putString(TEXT2, password);
             editor.apply();
             Toast.makeText(MainActivity.this, "Data saved", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void btnRegisterClicked(View view){
+        Intent intentRegister = new Intent(MainActivity.this, RegisterActivity.class);
+        MainActivity.this.startActivity(intentRegister);
+    }
+
+    public void btnDocClicked(View view){
+        Intent intentRegister = new Intent(MainActivity.this, DoctorLogReg.class);
+        MainActivity.this.startActivity(intentRegister);
     }
 }

@@ -38,7 +38,7 @@ public class LanguageActivity extends AppCompatActivity {
         Configuration configuration = getBaseContext().getResources().getConfiguration();
         configuration.setLocale(locale);
         configuration.setLayoutDirection(locale);
-        Intent intentRegister = new Intent(LanguageActivity.this, SearchDoctors.class);
+        Intent intentRegister = new Intent(LanguageActivity.this, SearchDoctor.class);
         this.startActivity(intentRegister);
     }
 

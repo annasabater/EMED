@@ -6,28 +6,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.emed_projecte_android.R;
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.io.IOException;
-
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ContactoActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacto);
+        setContentView(R.layout.activity_profile);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -50,7 +45,7 @@ public class ContactoActivity extends AppCompatActivity {
                     new UpdateUserInfoTask().execute(name, surname, mail, password, dni, numberSS, numberM, phoneNumber);
                 } else {
                     progressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(ContactoActivity.this, "Por favor, complete todos los campos obligatorios", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Por favor, complete todos los campos obligatorios", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -90,9 +85,9 @@ public class ContactoActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             progressBar.setVisibility(View.INVISIBLE);
             if (result != null && result.equals("Success")) {
-                Toast.makeText(ContactoActivity.this, "Información actualizada exitosamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Información actualizada exitosamente", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(ContactoActivity.this, "Error al actualizar la información", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Error al actualizar la información", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -17,15 +17,20 @@ public class DoctorI {
     @Expose
     private String speciality;
 
-    @SerializedName("disponibility")
+    @SerializedName("phone")
     @Expose
-    private boolean disponibility;
+    private String phone;
 
-    public DoctorI(String name, String office, String speciality, boolean disponibility) {
+    @SerializedName("hospital")
+    @Expose
+    private String hospital;
+
+    public DoctorI(String name, String office, String speciality, String phone, String hospital) {
         this.name = name;
         this.office = office;
-        this.speciality = this.speciality;
-        this.disponibility = disponibility;
+        this.speciality = speciality;
+        this.phone = phone;
+        this.hospital = hospital;
     }
 
     public DoctorI() {

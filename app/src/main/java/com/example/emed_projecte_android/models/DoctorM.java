@@ -16,16 +16,22 @@ public class DoctorM {
     @Expose
     private String speciality;
 
-    @SerializedName("disponibility")
+    @SerializedName("phone")
     @Expose
-    private boolean disponibility;
+    private String phone;
 
-    public DoctorM(String name, String office, String speciality, boolean disponibility) {
+    @SerializedName("hospital")
+    @Expose
+    private String hospital;
+
+    public DoctorM(String name, String office, String speciality, String phone, String hospital) {
         this.name = name;
         this.office = office;
         this.speciality = speciality;
-        this.disponibility = disponibility;
+        this.phone = phone;
+        this.hospital = hospital;
     }
+
 
     public DoctorM() {
     }

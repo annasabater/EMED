@@ -1,158 +1,139 @@
 package com.example.emed_projecte_android.ui.theme;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.emed_projecte_android.MainActivity;
 import com.example.emed_projecte_android.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import java.util.Objects;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class DoctorLogReg extends AppCompatActivity {
-
-    private ProgressBar progressBar;
-    private TextView doctorRegistrationHeader;
+    public static final String EXTRA_MESSAGE = "com.example.emed_projecte_android.ui.theme.MESSAGE";
+    private TextInputLayout nameLayout, officeLayout, specialityLayout, phoneLayout, hospitalLayout;
+    private TextInputEditText nameText, officeText, specialityText, phoneText, hospitalText;
     private Spinner doctorTypeSpinner;
-    private TextInputLayout nameLayout, officeLayout, specialityLayout, doctorNameLoginLayout;
-    private TextInputEditText nameText, officeText, specialityText, doctorNameLoginText;
-    private CheckBox disponibilityCheckbox;
-    private Button returnBtn, registerDoctorButton, loginDoctorButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctorlogreg);
 
-        progressBar = findViewById(R.id.progressBar);
-        doctorRegistrationHeader = findViewById(R.id.doctorRegistrationHeader);
-        doctorTypeSpinner = findViewById(R.id.doctorTypeSpinner);
         nameLayout = findViewById(R.id.nameLayout);
         officeLayout = findViewById(R.id.officeLayout);
         specialityLayout = findViewById(R.id.specialityLayout);
+        phoneLayout = findViewById(R.id.phoneLayout);
+        hospitalLayout = findViewById(R.id.hospitalLayout);
+
         nameText = findViewById(R.id.nameText);
         officeText = findViewById(R.id.officeText);
         specialityText = findViewById(R.id.specialityText);
-        disponibilityCheckbox = findViewById(R.id.disponibilityCheckbox);
-        registerDoctorButton = findViewById(R.id.registerDoctorButton);
-        doctorNameLoginLayout = findViewById(R.id.doctorNameLoginLayout);
-        doctorNameLoginText = findViewById(R.id.doctorNameLoginText);
-        loginDoctorButton = findViewById(R.id.loginDoctorButton);
-        returnBtn = findViewById(R.id.returnBtn);
+        phoneText = findViewById(R.id.phoneText);
+        hospitalText = findViewById(R.id.hospitalText);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.doctor_types_array,
-                android.R.layout.simple_spinner_item
-        );
+        doctorTypeSpinner = findViewById(R.id.doctorTypeSpinner);
+
+        // Configuración del Spinner
+        String[] doctorTypes = {"DoctorI", "DoctorSS", "DoctorM"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, doctorTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         doctorTypeSpinner.setAdapter(adapter);
-
-        doctorTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-            }
-        });
-
-        returnBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                returnFunction(v);
-            }
-        });
-
-        registerDoctorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerDoctor();
-            }
-        });
-
-        loginDoctorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginDoctor();
-            }
-        });
     }
 
-    private void registerDoctor() {
-        String doctorType = Objects.requireNonNull(doctorTypeSpinner.getSelectedItem()).toString();
-        String name = Objects.requireNonNull(nameText.getText()).toString();
-        String office = Objects.requireNonNull(officeText.getText()).toString();
-        String speciality = Objects.requireNonNull(specialityText.getText()).toString();
-        boolean disponibility = disponibilityCheckbox.isChecked();
+    public void registerDoctor(View view) { //Cuando le das al botón de registrar doctor
+        String name = nameText.getText().toString();
+        String office = officeText.getText().toString();
+        String speciality = specialityText.getText().toString();
+        String phone = phoneText.getText().toString();
+        String hospital = hospitalText.getText().toString();
 
-        new RegisterTask().execute(doctorType, name, office, speciality, String.valueOf(disponibility));
+        if (!name.isEmpty() && !office.isEmpty() && !speciality.isEmpty() && !phone.isEmpty() && !hospital.isEmpty()) {
+
+            String query = "http://192.168.1.39:9000/Android/registerDoctor";
+            new RegisterDoctorTask().execute(query, name, office, speciality, phone, hospital);
+        } else {
+            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void loginDoctor() {
-        String doctorName = Objects.requireNonNull(doctorNameLoginText.getText()).toString();
-        new LoginTask().execute(doctorName);
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private class RegisterTask extends AsyncTask<String, Void, String> {
-
+    private class RegisterDoctorTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            String doctorType = params[0];
+            String query = params[0];
             String name = params[1];
             String office = params[2];
             String speciality = params[3];
-            boolean disponibility = Boolean.parseBoolean(params[4]);
+            String phone = params[4];
+            String hospital = params[5];
 
-            // Realiza la lógica para enviar la información al servidor y registrar al doctor
+            try {
+                URL url = new URL(query);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
 
-            // Aquí deberías hacer una solicitud HTTP al servidor, por ejemplo, con Retrofit
-            // Simula una respuesta exitosa para este ejemplo
-            return "success";
+                // Construir el cuerpo de la solicitud
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
+                writer.write("name=" + name +
+                        "&office=" + office +
+                        "&speciality=" + speciality +
+                        "&phone=" + phone +
+                        "&hospital=" + hospital);
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                // Obtener la respuesta del servidor
+                InputStream stream = conn.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                return sb.toString();
+
+            } catch (IOException e) {
+                Log.e("RegisterDoctorActivity", "Error en la solicitud HTTP", e);
+                return null;
+            }
         }
 
         @Override
         protected void onPostExecute(String result) {
-            if (result.equals("success")) {
-                showToast("Doctor registered successfully");
+            if (result != null && result.equals("existe")) {
+                Toast.makeText(DoctorLogReg.this, "El doctor ya está registrado", Toast.LENGTH_SHORT).show();
             } else {
-                showToast("Registration failed");
+                Toast.makeText(DoctorLogReg.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                Intent intentRegister = new Intent(DoctorLogReg.this, MainActivity.class);
+                DoctorLogReg.this.startActivity(intentRegister);
             }
         }
     }
 
-    private class LoginTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String doctorName = params[0];
-            //FALTA IMPLEMENTAR LA LOGICA PER CONNECTAR AMB EL SERVIDOR
-            return "success";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result.equals("success")) {
-                showToast("Doctor logged in successfully");
-            } else {
-                showToast("Doctor not found");
-            }
-        }
-    }
     public void returnFunction(View view){
         Intent intentRegister = new Intent(DoctorLogReg.this, MainActivity.class);
         DoctorLogReg.this.startActivity(intentRegister);
